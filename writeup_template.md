@@ -38,7 +38,7 @@ The goals / steps of this project are the following:
 
 My project includes the following files:
 * model.py containing the script to create and train the model
-* BehavioudCloning-final.ipnb containing desccription, images and code of the whole pipeline
+* BehavioudCloning-final.ipynb containing desccription, images and code of the whole pipeline
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
 * writeup_report.md summarizing the results
@@ -51,7 +51,7 @@ python drive.py model.h5
 
 #### 3. Submission code is usable and readable
 
-The model.py and BehaviourCloning-final.ipnb file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py and BehaviourCloning-final.ipynb file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
 ### Model Architecture and Training Strategy
 
