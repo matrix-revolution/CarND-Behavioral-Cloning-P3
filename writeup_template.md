@@ -2,7 +2,9 @@
 
 ## Writeup Template
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+### Final Video :
+#### Model trained using only center images : https://youtu.be/u7TOier5U_k
+#### Model trained using center, left and right images : https://youtu.be/Gy6C2jLZZ6U
 
 ---
 
