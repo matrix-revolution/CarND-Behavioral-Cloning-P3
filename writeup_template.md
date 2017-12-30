@@ -38,6 +38,7 @@ The goals / steps of this project are the following:
 
 My project includes the following files:
 * model.py containing the script to create and train the model
+* BehavioudCloning-final.ipnb containing desccription, images and code of the whole pipeline
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
 * writeup_report.md summarizing the results
@@ -50,29 +51,29 @@ python drive.py model.h5
 
 #### 3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py and BehaviourCloning-final.ipnb file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
 ### Model Architecture and Training Strategy
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model consists of a convolution neural network with 5x5 and 3x3 filter sizes using ma pooling of 2x2 and "relu" as activation function  (model.py lines 76-89) 
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+The model includes RELU layers to introduce nonlinearity (code line 79-83), and the data is normalized in the model using a Keras lambda layer (code line 77). 
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model contains dropout layer (0.2) between Dense layer of size 50 and Dense layer of size 10,  in order to reduce overfitting (model.py lines 87). 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting. The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 91).
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road.  
 
 For details about how I created the training data, see the next section. 
 
@@ -80,17 +81,17 @@ For details about how I created the training data, see the next section.
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+My first step was to use a convolution neural network model similar to the LeNet Architecture. I trained the model using 10 epochs. I found that even with very good data collection, there were issues of car going off the track especially where there is curve and open road on the side. 
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+Then, I used the Nvidia Model. I saw the training error decreasing till 3 epochs. I used this model and saw that now the car was able to recover and drove properly when used left and right image correction.
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model so that ...
+To combat the overfitting, I modified the model by adding the dropout layer between the dense layer of size 100 and 50. I also added the maz pooling layer in the first three CNN layers. 
 
-Then I ... 
+I also used the Keras, cropping2D to crop the part of the image which are not useful. It also resulted in training the model faster.
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track especially on the curve and open road. To improve the driving behavior in these cases, I include more training dataset to train the model to recover from such situation. More detail in section collection training dataset.
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
@@ -134,29 +135,22 @@ Non-trainable params: 0
 
 
 #### 3. Creation of the Training Set & Training Process
-
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
-
-![alt text][image2]
-
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
-
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+Following steps where taken to generate training dataset :
+1. Recorded two laps on track one using center lane driving. I ensured that the car stayed in the center of the road as much as possible.
+2. To enable the vehicle from recovering from bad situation like going out of the track, I recorded the vehicle recovering from the left side and right side of the road moving back to the center. This was very helpful as show in Video :  https://youtu.be/Gy6C2jLZZ6U
+3. I tried to collect more training data where there are curves in the path. Turning the car smoothly on these paths.
+4. To generalize the model, I repeated the above steps for track 2 to collect enough training data so that it doesn't overfit.
+5. In my model.py, I flipped the center, right, left images to augment the training dataset. This helped me in dealing with the left turn or rigght turn bias. The steering angle was negated for each image flip. 
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
+After the collection process, I had 18,515 number of data points. For the preprocessing step, I normalized the data by using Kera's Lambda Layer. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I finally randomly shuffled the data set and put 20% of the data into a validation set. 
+
+I used this training data for training the model.The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3 as evidenced by line 92 in model.py I used an adam optimizer so that manually training the learning rate wasn't necessary.
+
+I trained two models :
+1. First with only center images
+2. Second with all center, left and right images. I found that using left and right image with correction helped the model to remain in center as much as possible.
+
+Both models video link is posted in the top of the template. 
